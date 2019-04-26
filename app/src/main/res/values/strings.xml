@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NotificationTest</string>
+    <string name="big_notification_text_content">不用擔心是否重複創建頻道，如果在創建頻道時，發現該頻道已經創建，系統會忽略此次創建。\n\n在設定重要性方面，創建頻道的時候同時會決定他的重要性，也就是中斷使用者行為的程度(由 `NotificationManager` 提供常數)，使用者可以在創建頻道後自己決定頻道的重要性。</string>
+</resources>
