@@ -2,8 +2,11 @@
 
 Notification(通知) 是手機應用程式常常用到的元件，他提供了
 
-使用 `NotificationCompat.Builder` 創建 `Nofitication`，包含基本設定、大型文字設定、導引回應用程式，
-同時也加入行動按鈕。
+使用 `NotificationCompat.Builder` 創建 `Nofitication`，包含：
+- 基本設定
+- 大型文字設定
+- 導引回應用程式，
+- 加入行動按鈕。
 
 同時也示範加入頻道。
 
