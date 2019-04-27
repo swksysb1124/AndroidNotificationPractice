@@ -1,9 +1,12 @@
 package crop.computer.askey.notificationtest;
 
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +19,12 @@ import static android.app.Notification.EXTRA_NOTIFICATION_ID;
 
 public class MainActivity extends AppCompatActivity {
 
-    int notificationId = 100;
 
     public static final String ACTION_SNOOZE = "crop.computer.askey.notificationtest.ACTION_SNOOZE";
     public static final String ACTION_CANCEL = "crop.computer.askey.notificationtest.ACTION_CANCEL";
+
+    public static final String NOTIFICATION_CHANNEL_ID = "JASON_CHANNEL";
+    public static final int NOTIFICATION_ID = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 cancelNotification();
             }
         });
+
     }
 
     @Override
@@ -55,17 +61,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void notifyNotification() {
+        // 建立通知頻道 (8.0以上適用)
+        createNotificationChannel();
 
         // 通知基本設定
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "JASON_CHANNEL")
-                .setSmallIcon(R.mipmap.ic_launcher) // 設定小圖示(必要)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground) // 設定小圖示(必要)
 
                 .setContentTitle("Test") // 設定標題
                 .setContentText("MY Test") // 設定文字內容
                 .setContentIntent(getContentIntent()) // 設定輕觸事件執行的意圖，注意意圖必須被包裹在待定意圖中
                 .setAutoCancel(true); // 設定輕觸後是否自動關閉通知
 
-        // 設定優先權 (7.0以上)
+        // 設定優先權 (7.0以上適用)
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         // 設定大型文字內容
@@ -76,13 +84,33 @@ public class MainActivity extends AppCompatActivity {
         builder.addAction(R.drawable.ic_launcher_foreground, "Cancel", getCancelActionIntent());
 
         // 發送通知
-        NotificationManagerCompat.from(this).notify(notificationId, builder.build());
+        NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, builder.build());
     }
 
     private void cancelNotification() {
-        NotificationManagerCompat.from(this).cancel(notificationId);
+        NotificationManagerCompat.from(this).cancel(NOTIFICATION_ID);
     }
 
+    private void createNotificationChannel() {
+
+        // 創建 NotificationChannel，限定在API 26+(8.0 above)，
+        // 此類目前沒有被包含在支援函式庫中
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            CharSequence name = "Jason Notification Channel";
+            String description = "Jason's channel";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if(notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+    }
 
 
     private PendingIntent getContentIntent() {
