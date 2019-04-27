@@ -18,7 +18,7 @@ private void notifyNotification() {
 
     // 通知基本設定
     NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "JASON_CHANNEL")
-            .setSmallIcon(R.mipmap.ic_launcher) // 設定小圖示(必要)
+            .setSmallIcon(R.drawable.ic_launcher_foreground) // 設定小圖示(必要)
 
             .setContentTitle("Test") // 設定標題
             .setContentText("MY Test") // 設定文字內容
